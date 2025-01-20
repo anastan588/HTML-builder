@@ -153,6 +153,27 @@ function copyAssetsDirectory(
   pathOfCurrentFolderAssets,
   pathOfDestinationFolderAssets,
 ) {
+  fs.access(pathOfDestinationFolderAssets, (err) => {
+    if (!err) {
+      fs.rm(pathOfDestinationFolderAssets, { recursive: true }, (err) => {
+        if (!err) {
+          // console.log('folder deleted');
+          copyAssetsDir(
+            pathOfCurrentFolderAssets,
+            pathOfDestinationFolderAssets,
+          );
+        }
+      });
+    } else {
+      copyAssetsDir(pathOfCurrentFolderAssets, pathOfDestinationFolderAssets);
+    }
+  });
+}
+
+function copyAssetsDir(
+  pathOfCurrentFolderAssets,
+  pathOfDestinationFolderAssets,
+) {
   fsPromises
     .mkdir(pathOfDestinationFolderAssets, { recursive: true })
     .then(function () {
@@ -161,19 +182,19 @@ function copyAssetsDirectory(
     .catch(function (err) {
       console.log(`Ups, something went wrong) ${err}`);
     });
-  fs.readdir(
-    pathOfDestinationFolderAssets,
-    { withFileTypes: true },
-    function (err, files) {
-      files.forEach((file) => {
-        if (file.isFile()) {
-          fsPromises.unlink(
-            path.join(pathOfDestinationFolderAssets, file.name),
-          );
-        }
-      });
-    },
-  );
+  // fs.readdir(
+  //   pathOfDestinationFolderAssets,
+  //   { withFileTypes: true },
+  //   function (err, files) {
+  //     files.forEach((file) => {
+  //       if (file.isFile()) {
+  //         fsPromises.unlink(
+  //           path.join(pathOfDestinationFolderAssets, file.name),
+  //         );
+  //       }
+  //     });
+  //   },
+  // );
   fs.readdir(
     pathOfCurrentFolderAssets,
     { withFileTypes: true },
