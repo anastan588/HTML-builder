@@ -25,7 +25,10 @@ function getInromationAboutFiles() {
               // console.log(stats);
               let size = stats.size;
               // console.log(size);
-              let nameOfFile = file.name.split('.')[0];
+              let nameOfFile = file.name
+                .split('.')
+                .slice(0, file.name.split('.').length - 1)
+                .join('.');
               let nameOfExtension = ext.slice(1, ext.length);
               // console.log(nameOfFile);
               console.log(
