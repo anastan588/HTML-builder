@@ -6,21 +6,40 @@ let pathOfCurrentFolder = path.join(__dirname, 'files');
 let pathOfCopyFolder = path.join(__dirname, 'files-copy');
 
 function copyDirectory(pathOfCurrentFolder, pathOfCopyFolder) {
+  fs.access(pathOfCopyFolder, (err) => {
+    if (!err) {
+      fs.rm(pathOfCopyFolder, { recursive: true }, (err) => {
+        if (!err) {
+          // console.log('folder deleted');
+          copyDir();
+        }
+      });
+    } else {
+      copyDir();
+    }
+  });
+}
+
+function copyDir() {
   fsPromises
     .mkdir(pathOfCopyFolder, { recursive: true })
-    // .then(function () {
-    //   console.log("New directory created successfully");
-    // })
+    .then(function () {
+      console.log('New directory created successfully');
+    })
     .catch(function (err) {
       console.log(`Ups, something went wrong) ${err}`);
     });
-  fs.readdir(pathOfCopyFolder, { withFileTypes: true }, function (err, files) {
-    files.forEach((file) => {
-      if (file.isFile()) {
-        fsPromises.unlink(path.join(pathOfCopyFolder, file.name));
-      }
-    });
-  });
+  // fs.readdir(
+  //   pathOfCopyFolder,
+  //   { withFileTypes: true },
+  //   function (err, files) {
+  //     files.forEach((file) => {
+  //       if (file.isFile()) {
+  //         fsPromises.unlink(path.join(pathOfCopyFolder, file.name));
+  //       }
+  //     });
+  //   },
+  // );
   fs.readdir(
     pathOfCurrentFolder,
     { withFileTypes: true },
@@ -31,9 +50,9 @@ function copyDirectory(pathOfCurrentFolder, pathOfCopyFolder) {
           let pathOfCopyFile = path.join(pathOfCopyFolder, file.name);
           fsPromises
             .copyFile(pathOfCurrentFile, pathOfCopyFile)
-            // .then(function () {
-            //   console.log("File Copied to the new Directory");
-            // })
+            .then(function () {
+              // console.log('File Copied to the new Directory');
+            })
             .catch(function (err) {
               console.log(`Ups, something went wrong) ${err}`);
             });
