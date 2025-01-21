@@ -48,7 +48,7 @@ function makeHtmlPage() {
               let arrayOfExp = [];
               let countOfHTmlExp = 0;
               for (let i = 0; i < files.length; i += 1) {
-                //   console.log(files[i].name);
+                // console.log(files[i].name);
                 arrayOfExp.push(files[i].name.split('.')[1]);
                 if (files[i].name.split('.')[1] === 'html') {
                   countOfHTmlExp += 1;
@@ -77,7 +77,7 @@ function makeHtmlPage() {
                     //   console.log(nameOfFile);
                     // console.log(innerTextInFile);
                     let templateTag = new RegExp(`{{${nameOfFile}}}`, 'g');
-                    //   console.log(templateTag);
+                    // console.log(templateTag);
 
                     if (innerTextInFile.match(templateTag)) {
                       // console.log(count);
@@ -91,9 +91,9 @@ function makeHtmlPage() {
                         innerTextInFileForCHange = innerTextInFile;
                         //    console.log(innerTextInFileForCHange);
                         count = count + 1;
-                        //   console.log(count);
+                        // console.log(count);
                         //   console.log(countOfHTmlExp);
-                        if (count === countOfHTmlExp) {
+                        if (files.indexOf(file) === files.length - 1) {
                           streamForWritingIndexHtml.write(
                             innerTextInFileForCHange,
                           );
